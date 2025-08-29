@@ -71,6 +71,11 @@ void main() {
         'when summing the input values', () {
       expect(calc.add("2,1001"), equals(2));
     });
+
+    test('Should support delimiters of any length '
+        'When custom delimiters are specified', () {
+      expect(calc.add("//[***]\n1***2***3"), equals(6));
+    });
   });
 
   group('StringCalculator.getCalledCount() ', () {

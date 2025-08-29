@@ -18,15 +18,23 @@ class StringCalculator {
 
   String _extractContent(String numbers) {
     if (numbers.startsWith('//')) {
-      return numbers.substring(4); // Skip //x\n
+      return numbers.substring(numbers.indexOf('\n') + 1);
     }
     return numbers;
   }
 
   String _extractDelimiterPattern(String numbers) {
     if (numbers.startsWith('//')) {
-      final delimiter = numbers[2];
-      return '[$delimiter]';
+      final delimiterSpec = numbers.substring(2, numbers.indexOf('\n'));
+
+      // Case 1: [delimiter] format → supports any length
+      final bracketMatch = RegExp(r'^\[(.+)\]$').firstMatch(delimiterSpec);
+      if (bracketMatch != null) {
+        return RegExp.escape(bracketMatch.group(1)!);
+      }
+
+      // Case 2: single-character delimiter (legacy)
+      return RegExp.escape(delimiterSpec);
     }
     return '[,\n]';
   }
