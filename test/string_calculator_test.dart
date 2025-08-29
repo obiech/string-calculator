@@ -13,4 +13,10 @@ void main() {
     final sc = StringCalculator();
     expect(sc.add('7'), 7);
   });
+
+  test('Should return the sum '
+      'When input contains two numbers separated by a comma', () {
+    final calc = StringCalculator();
+    expect(calc.add("1,2"), 3);
+  });
 }
