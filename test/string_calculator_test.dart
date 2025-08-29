@@ -67,7 +67,8 @@ void main() {
       );
     });
 
-    test('Numbers bigger than 1000 should be ignored', () {
+    test('Should ignore numbers greater than 1000 '
+        'when summing the input values', () {
       expect(calc.add("2,1001"), equals(2));
     });
   });
