@@ -81,6 +81,15 @@ void main() {
         'When custom delimiters are specified', () {
       expect(calc.add('//[*][%]\n1*2%3'), 6);
     });
+
+    test(
+      'Should support multiple custom delimiters of any length '
+      'When the input defines delimiters in the //[delim1][delim2]... format '
+      'Then the calculator should correctly split numbers using all of them',
+      () {
+        expect(calc.add("//[**][%%]\n1**2%%3"), equals(6));
+      },
+    );
   });
 
   group('StringCalculator.getCalledCount() ', () {
