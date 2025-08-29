@@ -16,11 +16,9 @@ class StringCalculator {
         .toList();
     final values = parts.map(int.parse).toList();
 
-    // Handle single negative
-    if (values.any((v) => v < 0)) {
-      throw Exception(
-        "negatives not allowed: ${values.firstWhere((v) => v < 0)}",
-      );
+    final negatives = values.where((v) => v < 0).toList();
+    if (negatives.isNotEmpty) {
+      throw Exception("negatives not allowed: ${negatives.join(', ')}");
     }
 
     return values.fold(0, (a, b) => a + b);

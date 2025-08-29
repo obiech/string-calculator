@@ -50,4 +50,19 @@ void main() {
       ),
     );
   });
+
+  test('Should throw an exception listing all negative numbers '
+      'When multiple negative numbers are passed', () {
+    final calc = StringCalculator();
+    expect(
+      () => calc.add("1,-2,3,-4"),
+      throwsA(
+        predicate(
+          (e) =>
+              e is Exception &&
+              e.toString().contains("negatives not allowed: -2, -4"),
+        ),
+      ),
+    );
+  });
 }
