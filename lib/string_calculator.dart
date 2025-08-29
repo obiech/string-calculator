@@ -10,7 +10,19 @@ class StringCalculator {
       content = numbers.substring(4); // skip `//x\n`
     }
 
-    final parts = content.split(RegExp(delimiterPattern));
-    return parts.map(int.parse).reduce((a, b) => a + b);
+    final parts = content
+        .split(RegExp(delimiterPattern))
+        .where((s) => s.isNotEmpty)
+        .toList();
+    final values = parts.map(int.parse).toList();
+
+    // Handle single negative
+    if (values.any((v) => v < 0)) {
+      throw Exception(
+        "negatives not allowed: ${values.firstWhere((v) => v < 0)}",
+      );
+    }
+
+    return values.fold(0, (a, b) => a + b);
   }
 }
