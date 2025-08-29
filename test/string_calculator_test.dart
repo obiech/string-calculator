@@ -25,7 +25,8 @@ void main() {
     expect(calc.add("1,2,3,4"), 10);
   });
 
-  test('handles newlines between numbers as delimiters', () {
+  test('Should treat newlines as delimiters '
+      'When they appear between numbers', () {
     final calc = StringCalculator();
     expect(calc.add("1\n2,3"), 6);
   });
