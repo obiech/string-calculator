@@ -65,4 +65,14 @@ void main() {
       ),
     );
   });
+
+  test('Should return the number of calls to add() '
+      'When GetCalledCount is invoked', () {
+    final calc = StringCalculator();
+    expect(calc.getCalledCount(), 0);
+    calc.add("1,2");
+    expect(calc.getCalledCount(), 1);
+    calc.add("3");
+    expect(calc.getCalledCount(), 2);
+  });
 }

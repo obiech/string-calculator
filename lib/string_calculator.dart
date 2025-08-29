@@ -1,5 +1,10 @@
 class StringCalculator {
+  int _callCount = 0;
+
+  int getCalledCount() => _callCount;
+
   int add(String numbers) {
+    _callCount++;
     if (numbers.isEmpty) return 0;
     String delimiterPattern = '[,\n]';
     String content = numbers;
