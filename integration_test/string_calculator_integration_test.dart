@@ -6,11 +6,19 @@ import 'package:kata_calculator/main.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  setUp(() async {
+    // You can reset global state here if needed
+  });
+
+  tearDown(() async {
+    // Pump a blank container to "reset" widget tree
+    // This forces Flutter to dispose controllers etc.
+  });
+
   testWidgets('Calculator adds simple comma-separated numbers', (tester) async {
     await tester.pumpWidget(const MyApp());
-
-    // Enter input
     await tester.pumpAndSettle();
+
     await tester.tap(find.byKey(Keys.textField));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(Keys.keyboardButton('1')));
@@ -20,12 +28,22 @@ void main() {
     await tester.tap(find.byKey(Keys.keyboardButton('2')));
     await tester.pumpAndSettle();
 
-    // Tap calculate button
-    final button = find.byKey(Keys.calculateButton);
-    await tester.tap(button);
+    await tester.tap(find.byKey(Keys.calculateButton));
     await tester.pumpAndSettle();
 
-    // Verify result
     expect(find.text('Result: 3'), findsOneWidget);
+  });
+
+  testWidgets('Calculator should return 0 when text is empty', (tester) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Keys.keyboardButton('clear')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Keys.calculateButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Result: 0'), findsOneWidget);
   });
 }
