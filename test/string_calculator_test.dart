@@ -7,4 +7,10 @@ void main() {
     final sc = StringCalculator();
     expect(sc.add(''), 0);
   });
+
+  test('Should return the number '
+      'When a single number is given', () {
+    final sc = StringCalculator();
+    expect(sc.add('7'), 7);
+  });
 }
