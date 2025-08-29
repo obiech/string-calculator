@@ -19,4 +19,9 @@ void main() {
     final calc = StringCalculator();
     expect(calc.add("1,2"), 3);
   });
+
+  test('returns sum when input has multiple numbers separated by comma', () {
+    final calc = StringCalculator();
+    expect(calc.add("1,2,3,4"), 10);
+  });
 }
