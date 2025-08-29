@@ -47,6 +47,6 @@ class StringCalculator {
   }
 
   int _sum(List<int> numbers) {
-    return numbers.fold(0, (a, b) => a + b);
+    return numbers.where((v) => v <= 1000).fold(0, (a, b) => a + b);
   }
 }

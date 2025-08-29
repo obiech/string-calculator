@@ -66,6 +66,10 @@ void main() {
         ),
       );
     });
+
+    test('Numbers bigger than 1000 should be ignored', () {
+      expect(calc.add("2,1001"), equals(2));
+    });
   });
 
   group('StringCalculator.getCalledCount() ', () {
