@@ -76,6 +76,11 @@ void main() {
         'When custom delimiters are specified', () {
       expect(calc.add("//[***]\n1***2***3"), equals(6));
     });
+
+    test('Should support multiple delimiters '
+        'When custom delimiters are specified', () {
+      expect(calc.add('//[*][%]\n1*2%3'), 6);
+    });
   });
 
   group('StringCalculator.getCalledCount() ', () {

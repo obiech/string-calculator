@@ -24,19 +24,21 @@ class StringCalculator {
   }
 
   String _extractDelimiterPattern(String numbers) {
-    if (numbers.startsWith('//')) {
-      final delimiterSpec = numbers.substring(2, numbers.indexOf('\n'));
+    if (!numbers.startsWith('//')) return '[,\n]';
 
-      // Case 1: [delimiter] format → supports any length
-      final bracketMatch = RegExp(r'^\[(.+)\]$').firstMatch(delimiterSpec);
-      if (bracketMatch != null) {
-        return RegExp.escape(bracketMatch.group(1)!);
-      }
+    final delimiterSpec = numbers.substring(2, numbers.indexOf('\n'));
 
-      // Case 2: single-character delimiter (legacy)
-      return RegExp.escape(delimiterSpec);
+    // Extract all delimiters inside [ ]
+    final matches = RegExp(r'\[(.+?)\]').allMatches(delimiterSpec);
+
+    if (matches.isNotEmpty) {
+      return matches
+          .map((m) => RegExp.escape(m.group(1)!))
+          .join('|'); // OR pattern
     }
-    return '[,\n]';
+
+    // Single-character delimiter fallback
+    return RegExp.escape(delimiterSpec);
   }
 
   List<int> _parseNumbers(String content, String pattern) {
