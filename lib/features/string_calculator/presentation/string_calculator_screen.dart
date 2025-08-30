@@ -20,11 +20,11 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
 
   List<String> get _keyboardText => [
     ...Consts.keyboardText,
-    ...?_customDelimiters,
+    ..._customDelimiters,
   ];
 
-  List<String>? get _customDelimiters {
-    if (_customDelimiterController.text.trim().isEmpty) return null;
+  List<String> get _customDelimiters {
+    if (_customDelimiterController.text.trim().isEmpty) return [','];
     return _customDelimiterController.text
         .split(',')
         .map((d) => d.trim())
@@ -36,9 +36,9 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
     try {
       final calculator = StringCalculator();
 
-      final delimiterPrefix = _customDelimiters == null
+      final delimiterPrefix = _customDelimiterController.text.isEmpty
           ? ''
-          : '//${_customDelimiters?.map((d) => '[$d]').join()}\n';
+          : '//${_customDelimiters.map((d) => '[$d]').join()}\n';
 
       final result = calculator.add(
         '$delimiterPrefix${_inputController.text.trim()}',
@@ -101,7 +101,7 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
             CalculatorInputField(
               textFieldKey: Keys.demiliterTextField,
               controller: _customDelimiterController,
-              label: "Custom delimiters (comma separated)",
+              label: "Enter one or more delimiters, separated by commas",
             ),
             const SizedBox(height: 22),
             CalculatorInputField(
