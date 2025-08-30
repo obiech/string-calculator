@@ -20,11 +20,11 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
 
   List<String> get _keyboardText => [
     ...Consts.keyboardText,
-    ..._customDelimiters,
+    ...?_customDelimiters,
   ];
 
-  List<String> get _customDelimiters {
-    if (_customDelimiterController.text.trim().isEmpty) return [','];
+  List<String>? get _customDelimiters {
+    if (_customDelimiterController.text.trim().isEmpty) return null;
     return _customDelimiterController.text
         .split(',')
         .map((d) => d.trim())
@@ -36,9 +36,9 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
     try {
       final calculator = StringCalculator();
 
-      final delimiterPrefix = _customDelimiterController.text.isEmpty
+      final delimiterPrefix = _customDelimiters == null
           ? ''
-          : '//${_customDelimiters.map((d) => '[$d]').join()}\n';
+          : '//${_customDelimiters?.map((d) => '[$d]').join()}\n';
 
       final result = calculator.add(
         '$delimiterPrefix${_inputController.text.trim()}',
