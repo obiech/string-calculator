@@ -164,4 +164,21 @@ void main() {
       );
     },
   );
+
+  testWidgets('Calculator should ignore numbers greater than 1000', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    final inputField = find.byKey(Keys.textField);
+    await tester.enterText(inputField, '1002,5');
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Keys.calculateButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Result: 5'), findsOneWidget);
+  });
 }
