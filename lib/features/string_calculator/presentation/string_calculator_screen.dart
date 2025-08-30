@@ -12,15 +12,28 @@ class StringCalculatorScreen extends StatefulWidget {
 
 class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
   final TextEditingController _inputController = TextEditingController();
+  final TextEditingController _customDelimiterController =
+      TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   String _outputValue = "";
+
+  List<String> get _keyboardText => [
+    ...Consts.keyboardText,
+    _customDelimiterController.text,
+  ];
 
   void _onCalculate() {
     try {
       final calculator = StringCalculator();
 
-      final result = calculator.add(_inputController.text.trim());
+      final delimiterPrefix = _customDelimiterController.text.isEmpty
+          ? ''
+          : '//${_customDelimiterController.text}\n';
+
+      final result = calculator.add(
+        '$delimiterPrefix${_inputController.text.trim()}',
+      );
 
       setState(() => _outputValue = 'Result: $result');
     } catch (e) {
@@ -53,8 +66,15 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _customDelimiterController.addListener(() => setState(() {}));
+  }
+
+  @override
   void dispose() {
     _inputController.dispose();
+    _customDelimiterController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -70,13 +90,20 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
           children: [
             const SizedBox(height: 22),
             CalculatorInputField(
+              textFieldKey: Keys.demiliterTextField,
+              controller: _customDelimiterController,
+              label: "Custom delimiter",
+            ),
+            const SizedBox(height: 22),
+            CalculatorInputField(
+              textFieldKey: Keys.textField,
               controller: _inputController,
               focusNode: _focusNode,
               label: 'Enter numbers e.g. 1, 2, 3',
             ),
             const SizedBox(height: 12),
             Wrap(
-              children: Consts.keyboardText
+              children: _keyboardText
                   .map(
                     (d) => KeyboardButton(
                       value: d,
@@ -101,18 +128,20 @@ class CalculatorInputField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode? focusNode;
   final String label;
+  final Key textFieldKey;
 
   const CalculatorInputField({
     super.key,
     required this.controller,
     this.focusNode,
     required this.label,
+    required this.textFieldKey,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      key: Keys.textField,
+      key: textFieldKey,
       controller: controller,
       focusNode: focusNode,
       keyboardType: TextInputType.multiline,
