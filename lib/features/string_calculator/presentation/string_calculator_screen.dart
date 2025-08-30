@@ -14,7 +14,6 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
   final TextEditingController _inputController = TextEditingController();
   final TextEditingController _customDelimiterController =
       TextEditingController();
-  final FocusNode _focusNode = FocusNode();
 
   String _outputValue = "";
 
@@ -59,10 +58,6 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
     final text = _inputController.text;
     final selection = _inputController.selection;
 
-    if (!_focusNode.hasFocus) {
-      _focusNode.requestFocus();
-    }
-
     final newText = text.replaceRange(selection.start, selection.end, value);
 
     _inputController.value = _inputController.value.copyWith(
@@ -84,7 +79,6 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
   void dispose() {
     _inputController.dispose();
     _customDelimiterController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -94,6 +88,7 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
       appBar: AppBar(title: const Text('Kata Calculator'), centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 22.0),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -107,7 +102,6 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
             CalculatorInputField(
               textFieldKey: Keys.textField,
               controller: _inputController,
-              focusNode: _focusNode,
               label: 'Enter numbers e.g. 1, 2, 3',
             ),
             const SizedBox(height: 12),
@@ -135,14 +129,12 @@ class _StringCalculatorScreenState extends State<StringCalculatorScreen> {
 /// Input Field
 class CalculatorInputField extends StatelessWidget {
   final TextEditingController controller;
-  final FocusNode? focusNode;
   final String label;
   final Key textFieldKey;
 
   const CalculatorInputField({
     super.key,
     required this.controller,
-    this.focusNode,
     required this.label,
     required this.textFieldKey,
   });
@@ -152,9 +144,9 @@ class CalculatorInputField extends StatelessWidget {
     return TextField(
       key: textFieldKey,
       controller: controller,
-      focusNode: focusNode,
       keyboardType: TextInputType.multiline,
       maxLines: null,
+      onTapOutside: (event) => FocusScope.of(context).unfocus(),
       minLines: 1,
 
       textAlign: TextAlign.center,
