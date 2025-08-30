@@ -181,4 +181,30 @@ void main() {
 
     expect(find.text('Result: 5'), findsOneWidget);
   });
+
+  testWidgets('Calculator should support multiple delimiters', (tester) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    final demiliterInputField = find.byKey(Keys.demiliterTextField);
+    await tester.enterText(demiliterInputField, '*,;');
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Keys.textField));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Keys.keyboardButton('3')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Keys.keyboardButton('*')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Keys.keyboardButton('6')));
+    await tester.tap(find.byKey(Keys.keyboardButton(';')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Keys.keyboardButton('1')));
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Keys.calculateButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Result: 10'), findsOneWidget);
+  });
 }
