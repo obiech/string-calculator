@@ -1,16 +1,43 @@
 # kata_calculator
 
-A new Flutter project.
+# 🧮 String Calculator - Flutter
 
-## Getting Started
+A Flutter implementation of the classic **String Calculator Kata**, built with **Test-Driven Development (TDD)** principles and full testing coverage.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 📌 Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Add numbers from a string input.
+- Supports **multiple delimiters** (comma-separated) of any length.
+- Handles negative numbers with exceptions listing all negatives.
+- Ignores numbers larger than 1000.
+- Tracks how many times `Add()` has been called.
+- Custom input via UI with on-screen numeric and delimiter buttons.
+- Fully tested: unit tests, widget tests, and integration tests.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 💻 How It Works
+
+- Enter numbers in a `TextField`, separated by delimiters.
+- Optionally, enter custom delimiters in a comma-separated format, e.g., `;,%`.
+- Press **Calculate** to get the sum.
+- Negative numbers throw an exception listing all negatives.
+- Numbers larger than 1000 are ignored.
+
+---
+
+## 🖼️ Demo
+
+![Calculator Demo](assets/Screen%20Recording%202025-08-30%20at%2002.24.37.gif)  
+*GIF showing adding numbers, using custom delimiters, and displaying results.*
+
+---
+
+## 🧩 Installation
+
+```bash
+git clone https://github.com/obiech/string_calculator_flutter.git
+flutter pub get
+flutter run
