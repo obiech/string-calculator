@@ -58,4 +58,22 @@ void main() {
 
     expect(find.text('Result: 1'), findsOneWidget);
   });
+
+  testWidgets(
+    'Calculator should treat newlines as delimiters when they appear between numbers',
+    (tester) async {
+      await tester.pumpWidget(const MyApp());
+      await tester.pumpAndSettle();
+
+      final inputField = find.byKey(Keys.textField);
+      await tester.enterText(inputField, '1\n2');
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(Keys.calculateButton));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Result: 3'), findsOneWidget);
+    },
+  );
 }
