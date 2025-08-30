@@ -6,14 +6,9 @@ import 'package:kata_calculator/main.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() async {
-    // You can reset global state here if needed
-  });
+  setUp(() async {});
 
-  tearDown(() async {
-    // Pump a blank container to "reset" widget tree
-    // This forces Flutter to dispose controllers etc.
-  });
+  tearDown(() async {});
 
   testWidgets('Calculator adds simple comma-separated numbers', (tester) async {
     await tester.pumpWidget(const MyApp());
@@ -45,5 +40,22 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Result: 0'), findsOneWidget);
+  });
+
+  testWidgets('Calculator returns the value, when a single number is added', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Keys.textField));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(Keys.keyboardButton('1')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(Keys.calculateButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Result: 1'), findsOneWidget);
   });
 }
