@@ -127,7 +127,7 @@ void main() {
     expect(find.text('Result: 9'), findsOneWidget);
   });
 
-  testWidgets('Calculator should should error when negative is added', (
+  testWidgets('Calculator should show error when negative is added', (
     tester,
   ) async {
     await tester.pumpWidget(const MyApp());
@@ -143,4 +143,25 @@ void main() {
 
     expect(find.text('Exception: negatives not allowed: -8'), findsOneWidget);
   });
+
+  testWidgets(
+    'Calculator should listing all negative numbers, when negative is added',
+    (tester) async {
+      await tester.pumpWidget(const MyApp());
+      await tester.pumpAndSettle();
+
+      final inputField = find.byKey(Keys.textField);
+      await tester.enterText(inputField, '-8,-9,5');
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(Keys.calculateButton));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Exception: negatives not allowed: -8, -9'),
+        findsOneWidget,
+      );
+    },
+  );
 }
